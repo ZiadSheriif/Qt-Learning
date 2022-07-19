@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-
+#include<QDebug>
 double calcVal=0;
 bool divTrig=false;
 bool multTrig=false;
@@ -8,13 +8,13 @@ bool addTrig=false;
 bool subTrig=false;
 // constrcutor
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+  , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->Display->setText(QString::number(calcVal));
     QPushButton *numButtons[10];
     for(int i=0;i<10;i++){
-        QString butName="Button"+QString::number(i);
+        QString butName="pushButton"+QString::number(i);
         numButtons[i]=MainWindow :: findChild<QPushButton*>(butName);
         connect(numButtons[i],SIGNAL(relesed()),this,SLOT(numPressed()));
     }
@@ -34,13 +34,47 @@ void MainWindow:: numPressed(){
     }
 }
 void MainWindow::mathButtuonsPressed(){
-
+    divTrig=false;
+    multTrig=false;
+    addTrig=false;
+    subTrig=false;
+    QString displayVal=ui->Display->text();
+    calcVal=displayVal.toDouble();
+    QPushButton *button=(QPushButton*)sender();
+    QString butVal=button->text();
+    if(QString::compare(butVal,"/",Qt::CaseInsensitive)==0)
+        divTrig=true;
+    else    if(QString::compare(butVal,"*",Qt::CaseInsensitive)==0)
+        multTrig=true;
+    else   if(QString::compare(butVal,"+",Qt::CaseInsensitive)==0)
+        addTrig=true;
+    else
+        subTrig=true;
+    ui->Display->setText("");
 }
 void MainWindow::equalButton(){
-
+    double sol=0.0;
+    QString displayVal=ui->Display->text();
+    double dbDisplayVal=displayVal.toDouble();
+    if(addTrig)
+        sol=calcVal+dbDisplayVal;
+    else if(subTrig)
+        sol=calcVal-dbDisplayVal;
+    else if(multTrig)
+        sol=calcVal*dbDisplayVal;
+    else
+        sol=calcVal/dbDisplayVal;
+    ui->Display->setText(QString::number(sol));
 }
 void MainWindow::changeNumberSign(){
 
+    QString dispVal=ui->Display->text();
+    QRegExp reg("[-]?[0-9.]");
+    if(reg.exactMatch(dispVal)){
+        double dbDispVal=dispVal.toDouble();
+        double dbDisplaySign=-1*dbDispVal;
+        ui->Display->setText(QString::number(dbDisplaySign));
+    }
 }
 
 // destructor
