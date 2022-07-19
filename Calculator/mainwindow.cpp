@@ -19,8 +19,10 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 
 
     ui->Display->setText(QString::number(calcVal));
+    // creating array to iterate from 0->9 and check if button 's number pressed or not
     QPushButton *numButtons[10];
     for(int i=0;i<10;i++){
+
         // iterate on each button and casting with a certain one
         QString butName="pushButton"+QString::number(i);
         numButtons[i]=MainWindow :: findChild<QPushButton  *>(butName);
@@ -49,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
     connect(ui->MemGet,SIGNAL(released()),this,SLOT(getMemory()));
 
 }
-
+// function when user enters any button except 0->9
 void MainWindow:: numPressed(){
     QPushButton *button=(QPushButton*)sender();
     QString butVal= button->text();
@@ -89,16 +91,16 @@ void MainWindow::equalButton(){
     double sol=0.0;
     QString displayVal=ui->Display->text();
     double dbDisplayVal=displayVal.toDouble();
-    if(addTrig || subTrig || multTrig || divTrig){
-        if(addTrig)
-            sol=calcVal+dbDisplayVal;
-        else if(subTrig)
-            sol=calcVal-dbDisplayVal;
-        else if(multTrig)
-            sol=calcVal*dbDisplayVal;
-        else
-            sol=calcVal/dbDisplayVal;
-    }
+
+    if(addTrig)
+        sol=calcVal+dbDisplayVal;
+    else if(subTrig)
+        sol=calcVal-dbDisplayVal;
+    else if(multTrig)
+        sol=calcVal*dbDisplayVal;
+    else
+        sol=calcVal/dbDisplayVal;
+
     ui->Display->setText(QString::number(sol));
 }
 void MainWindow::changeNumberSign(){
@@ -126,12 +128,12 @@ void MainWindow::pushMemory(){
     Memory.push(val);
 }
 void MainWindow::getMemory(){
-    if(Memory.empty()){
-        ui->Display->setText("0");
-        return;
+    if(!Memory.empty()){
+        calcVal=Memory.top();
+        ui->Display->setText(QString::number(calcVal));
     }
-    calcVal=Memory.top();
-    ui->Display->setText(QString::number(calcVal));
+    else
+        ui->Display->setText("0");
 }
 
 // destructor
