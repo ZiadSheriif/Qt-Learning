@@ -22,6 +22,7 @@ private slots:
     void mathButtuonsPressed();
     void equalButton();
     void changeNumberSign();
+    void clearFunc();
 
 };
 #endif // MAINWINDOW_H

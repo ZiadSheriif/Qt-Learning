@@ -39,6 +39,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
     // change sign
     connect(ui->changeSign,SIGNAL(released()),this,SLOT(changeNumberSign()));
 
+    // clear calc
+    connect(ui->Clear,SIGNAL(released()),this,SLOT(clearFunc()));
+
 }
 
 void MainWindow:: numPressed(){
@@ -95,14 +98,18 @@ void MainWindow::equalButton(){
 void MainWindow::changeNumberSign(){
 
     QString dispVal=ui->Display->text();
-    QRegExp reg("[-]?[0-9.]");
+    QRegExp reg("[-]?[0-9.]*");
     if(reg.exactMatch(dispVal)){
         double dbDispVal=dispVal.toDouble();
         double dbDisplaySign=-1*dbDispVal;
         ui->Display->setText(QString::number(dbDisplaySign));
     }
 }
+void MainWindow::clearFunc(){
+    calcVal=0.0;
+    ui->Display->setText("0");
 
+}
 // destructor
 MainWindow::~MainWindow()
 {
