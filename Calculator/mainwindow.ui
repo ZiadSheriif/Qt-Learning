@@ -73,7 +73,7 @@ padding: 5px;
 }</string>
     </property>
     <property name="text">
-     <string>7</string>
+     <string>8</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="Display">
@@ -667,12 +667,6 @@ padding: 5px;
      <height>25</height>
     </rect>
    </property>
-   <widget class="QMenu" name="Calculator">
-    <property name="title">
-     <string>Calculator</string>
-    </property>
-   </widget>
-   <addaction name="Calculator"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

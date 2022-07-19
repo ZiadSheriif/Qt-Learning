@@ -1,23 +1,44 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include<QDebug>
-double calcVal=0;
+
+// global variables
+double calcVal=0.0;
 bool divTrig=false;
 bool multTrig=false;
 bool addTrig=false;
 bool subTrig=false;
+
+
 // constrcutor
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
   , ui(new Ui::MainWindow)
 {
+    // generate window
     ui->setupUi(this);
+
     ui->Display->setText(QString::number(calcVal));
     QPushButton *numButtons[10];
     for(int i=0;i<10;i++){
+        // iterate on each button and casting with a certain one
         QString butName="pushButton"+QString::number(i);
-        numButtons[i]=MainWindow :: findChild<QPushButton*>(butName);
-        connect(numButtons[i],SIGNAL(relesed()),this,SLOT(numPressed()));
+        numButtons[i]=MainWindow :: findChild<QPushButton  *>(butName);
+        connect(numButtons[i],SIGNAL(released()),this,SLOT(numPressed()));
     }
+
+
+    // operations
+    connect(ui->add,SIGNAL(released()),this,SLOT(mathButtuonsPressed()));
+    connect(ui->subtract,SIGNAL(released()),this,SLOT(mathButtuonsPressed()));
+    connect(ui->multiply,SIGNAL(released()),this,SLOT(mathButtuonsPressed()));
+    connect(ui->div,SIGNAL(released()),this,SLOT(mathButtuonsPressed()));
+
+    // equals
+    connect(ui->Equals,SIGNAL(released()),this,SLOT(equalButton()));
+
+    // change sign
+    connect(ui->changeSign,SIGNAL(released()),this,SLOT(changeNumberSign()));
+
 }
 
 void MainWindow:: numPressed(){
@@ -30,17 +51,20 @@ void MainWindow:: numPressed(){
     {
         QString newVal=displayVal+butVal;
         double  dbnewVal=newVal.toDouble();
-        ui->Display->setText(QString::number(dbnewVal));
+        ui->Display->setText(QString::number(dbnewVal,'g',16));
     }
 }
 void MainWindow::mathButtuonsPressed(){
+
     divTrig=false;
     multTrig=false;
     addTrig=false;
     subTrig=false;
+
+
     QString displayVal=ui->Display->text();
     calcVal=displayVal.toDouble();
-    QPushButton *button=(QPushButton*)sender();
+    QPushButton *button=(QPushButton  *)sender();
     QString butVal=button->text();
     if(QString::compare(butVal,"/",Qt::CaseInsensitive)==0)
         divTrig=true;
@@ -56,14 +80,16 @@ void MainWindow::equalButton(){
     double sol=0.0;
     QString displayVal=ui->Display->text();
     double dbDisplayVal=displayVal.toDouble();
-    if(addTrig)
-        sol=calcVal+dbDisplayVal;
-    else if(subTrig)
-        sol=calcVal-dbDisplayVal;
-    else if(multTrig)
-        sol=calcVal*dbDisplayVal;
-    else
-        sol=calcVal/dbDisplayVal;
+    if(addTrig || subTrig || multTrig || divTrig){
+        if(addTrig)
+            sol=calcVal+dbDisplayVal;
+        else if(subTrig)
+            sol=calcVal-dbDisplayVal;
+        else if(multTrig)
+            sol=calcVal*dbDisplayVal;
+        else
+            sol=calcVal/dbDisplayVal;
+    }
     ui->Display->setText(QString::number(sol));
 }
 void MainWindow::changeNumberSign(){
