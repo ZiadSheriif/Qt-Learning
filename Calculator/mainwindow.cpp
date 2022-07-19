@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include<QDebug>
+#include<QStack>
 
 // global variables
 double calcVal=0.0;
@@ -9,13 +10,13 @@ bool multTrig=false;
 bool addTrig=false;
 bool subTrig=false;
 
-
 // constrcutor
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
   , ui(new Ui::MainWindow)
 {
     // generate window
     ui->setupUi(this);
+
 
     ui->Display->setText(QString::number(calcVal));
     QPushButton *numButtons[10];
@@ -41,6 +42,11 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 
     // clear calc
     connect(ui->Clear,SIGNAL(released()),this,SLOT(clearFunc()));
+
+    // memories
+    connect(ui->MemAdd,SIGNAL(released()),this,SLOT(pushMemory()));
+    connect(ui->MemClear,SIGNAL(released()),this,SLOT(popMemory()));
+    connect(ui->MemGet,SIGNAL(released()),this,SLOT(getMemory()));
 
 }
 
@@ -108,8 +114,26 @@ void MainWindow::changeNumberSign(){
 void MainWindow::clearFunc(){
     calcVal=0.0;
     ui->Display->setText("0");
-
 }
+
+// Memories
+void MainWindow::popMemory(){
+    if(!Memory.empty())
+        Memory.pop();
+}
+void MainWindow::pushMemory(){
+    double val=ui->Display->text().toDouble();
+    Memory.push(val);
+}
+void MainWindow::getMemory(){
+    if(Memory.empty()){
+        ui->Display->setText("0");
+        return;
+    }
+    calcVal=Memory.top();
+    ui->Display->setText(QString::number(calcVal));
+}
+
 // destructor
 MainWindow::~MainWindow()
 {

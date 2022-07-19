@@ -1,6 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include<QStack>
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -16,6 +16,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QStack<double>Memory;
 
 private slots:
     void numPressed();
@@ -23,6 +24,9 @@ private slots:
     void equalButton();
     void changeNumberSign();
     void clearFunc();
+    void popMemory();
+    void pushMemory();
+    void getMemory();
 
 };
 #endif // MAINWINDOW_H
