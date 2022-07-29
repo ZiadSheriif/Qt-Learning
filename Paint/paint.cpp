@@ -92,12 +92,37 @@ void Paint::createMenus(){
 
     fileMenu=new QMenu(tr("&File"),this);
     fileMenu->addAction(openAct);
-    fileMenu->addAction(saveAsMenu);
+    //    fileMenu->addAction(saveAsMenu);
     fileMenu->addAction(printAct);
     fileMenu->addAction(exitAct);
     optionMenu=new QMenu(tr("&Options"),this);
     optionMenu->addSeparator();
-// TODO: compelte the list of the option and menu lists
+    // TODO: compelte the list of the option and menu lists
+    optionMenu->addAction(penColorAct);
+    optionMenu->addAction(penWidthAct);
+    fileMenu->addSeparator();
+    optionMenu->addAction(clearScreenAct);
+
+    helpMenu=new QMenu(tr("&Help"),this);
+    helpMenu->addAction(aboutAct);
+    helpMenu->addAction(aboutQtAct);
+
+    menuBar()->addMenu(fileMenu);
+    helpMenu->addMenu(optionMenu);
+    helpMenu->addMenu(helpMenu);
+}
+bool Paint::maybeSave(){
+    if(scribbleArea->isModified()){
+        QMessageBox::StandardButton ret;
+        ret=QMessageBox::warning(this,tr("Scribble"),tr("The image has been modified.\n"
+                                                        "Do you want to save yoru changes?"),QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+
+    if(ret==QMessageBox::Save)
+        return saveFile("png");
+    else if(ret==QMessageBox::Cancel)
+        return false;
+    }
+        return true;
 
 }
 Paint::~Paint()
