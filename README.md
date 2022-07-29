@@ -10,7 +10,7 @@
 ```
 https://github.com/ZiadSheriif/Qt-Learning.git
 ```
- 2. ***Open folder project (cmake.txt)***
+ 2. ***Open folder project (CMakeLists.txt)***
 
 ![camkelist](images/camke.png)
 

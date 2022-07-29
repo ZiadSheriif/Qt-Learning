@@ -29,7 +29,8 @@ private:
     QMenu *optionMenu;
     QMenu *helpMenu;
     QAction *openAct;
-    QList <QAction*>saveActs;
+    QAction *exitAct;
+    QList <QAction*>saveAsActs;
     QAction *penColorAct;
     QAction *penWidthAct;
     QAction *printAct;
