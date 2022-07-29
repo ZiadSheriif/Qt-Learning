@@ -36,7 +36,7 @@ private:
     void drawlineTo(const QPoint &endPoint);
     void resizeImage(QImage *image,const QSize &newSize);
     bool modified;
-    bool scribbleing;
+    bool scribbling;
     QColor myPenColor;
     QImage image;
     QPoint lastPoint;

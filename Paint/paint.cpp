@@ -117,13 +117,23 @@ bool Paint::maybeSave(){
         ret=QMessageBox::warning(this,tr("Scribble"),tr("The image has been modified.\n"
                                                         "Do you want to save yoru changes?"),QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
 
-    if(ret==QMessageBox::Save)
-        return saveFile("png");
-    else if(ret==QMessageBox::Cancel)
+        if(ret==QMessageBox::Save)
+            return saveFile("png");
+        else if(ret==QMessageBox::Cancel)
+            return false;
+    }
+    return true;
+}
+bool Paint::saveFile(const QByteArray &fileFormat){
+    QString path=QDir::currentPath()+"/unitled"+fileFormat;
+    QString fileName=QFileDialog::getSaveFileName(this,tr("Save As"),
+                                                  path,tr("%1 Files (*.%2);; All Files(*").arg(QString::fromLatin1(fileFormat.toUpper())).QString::fromLatin1(fileFormat));
+    if(fileName.isEmpty()){
         return false;
     }
-        return true;
-
+    else{
+        return scribbleArea->saveImage(fileName,fileFormat.constData());
+    }
 }
 Paint::~Paint()
 {
